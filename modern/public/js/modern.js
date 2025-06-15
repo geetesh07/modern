@@ -1,44 +1,72 @@
-// Inject Alpine
-const script = document.createElement('script');
-script.src = "https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js";
-script.defer = true;
-document.head.appendChild(script);
+// 1) Load Alpine.js
+(function(){
+  const s = document.createElement("script");
+  s.src = "https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js";
+  s.defer = true;
+  document.head.appendChild(s);
+})();
 
-// Dark mode
+// 2) Dark/Light Mode Toggle Button Injection
 document.addEventListener("DOMContentLoaded", () => {
-  const theme = localStorage.getItem("theme") || (window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light");
-  document.documentElement.setAttribute("data-theme", theme);
-});
+  // create the toggle button
+  const btn = document.createElement("div");
+  btn.id = "darkModeBtn";
+  btn.innerText = "Toggle Theme";
+  btn.style.cursor = "pointer";
+  document.querySelector(".navbar .container-fluid")?.appendChild(btn);
 
-// Toggle dark mode (Ctrl+D)
-document.addEventListener("keydown", (e) => {
-  if (e.ctrlKey && e.key === "d") {
-    const current = document.documentElement.getAttribute("data-theme");
-    const next = current === "dark" ? "light" : "dark";
+  // set initial theme
+  const stored = localStorage.getItem("theme");
+  const prefers = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  const theme = stored || prefers;
+  document.documentElement.setAttribute("data-theme", theme);
+
+  // click to toggle
+  btn.addEventListener("click", () => {
+    const cur = document.documentElement.getAttribute("data-theme");
+    const next = cur === "dark" ? "light" : "dark";
     document.documentElement.setAttribute("data-theme", next);
     localStorage.setItem("theme", next);
-    showToast("Switched to " + next + " mode", "info");
-  }
+    showToast(`Switched to ${next}`, "success");
+  });
 });
 
-// Toast system
-window.showToast = function (msg = "Saved!", type = "success") {
-  const toast = document.createElement("div");
-  toast.className = `fixed bottom-5 right-5 z-[9999] text-white px-4 py-2 rounded-xl shadow-lg bg-${type === "success" ? "green" : "red"}-600 animate-fade`;
-  toast.innerText = msg;
-  document.body.appendChild(toast);
-  setTimeout(() => toast.remove(), 3000);
+// 3) Toast API
+window.showToast = function(msg="Done", type="success"){
+  const t = document.createElement("div");
+  t.className = `toast toast-${type}`;
+  t.innerText = msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(), 3000);
 };
 
-// Auto upgrade sidebar
+// 4) Floating Action Button (FAB)
 document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(() => {
-    const sidebar = document.querySelector(".layout-side-section, .sidebar");
-    if (sidebar) {
-      sidebar.style.borderRadius = "1rem";
-      sidebar.style.padding = "1rem";
-      sidebar.style.backdropFilter = "blur(20px)";
-      sidebar.style.boxShadow = "0 8px 24px rgba(0,0,0,0.1)";
-    }
-  }, 1000);
+  const fab = document.createElement("button");
+  fab.innerText = "+";
+  fab.style.cssText = [
+    'position:fixed','bottom:20px','right:20px','width:56px','height:56px',
+    'border-radius:50%','font-size:2rem','color:white','background:var(--grad-light)',
+    'box-shadow:var(--shadow-light)','border:none','cursor:pointer','z-index:1000'
+  ].join(';');
+  document.body.appendChild(fab);
+  fab.onclick = ()=> showToast("FAB Clicked!", "success");
+});
+
+// 5) Force apply custom classes to existing elements (no HTML change)
+document.addEventListener("DOMContentLoaded", () => {
+  // Style all existing buttons
+  document.querySelectorAll("button, .btn").forEach(b => {
+    b.classList.add("!px-5","!py-2","!rounded-full","!transition","!transform","!hover:scale-[1.03]");
+    b.style.background = "var(--grad-light)";
+    b.style.color = "white";
+  });
+  // Style sidebar links
+  document.querySelectorAll(".layout-side-section a, .standard-sidebar ul li a").forEach(el => {
+    el.classList.add("!flex","!items-center","!gap-3","!px-4","!py-2","!rounded-lg","!transition");
+  });
+  // Convert list rows into cards
+  document.querySelectorAll(".list-row").forEach(row => {
+    row.classList.add("!rounded-xl","!mb-4","!p-4","!transition","!hover:scale-[1.01]");
+  });
 });

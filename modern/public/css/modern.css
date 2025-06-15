@@ -1,54 +1,173 @@
+/* Import Tailwind */
 @import url('https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css');
 
+/*===============*/
+/*  CSS VARIABLES */
+/*===============*/
 :root {
   --radius: 1rem;
-  --blur: 20px;
-  --shadow: 0 10px 40px rgba(0,0,0,0.1);
-}
-
-[data-theme='dark'] {
-  --bg-base: #0f172a;
-  --bg-card: rgba(30, 41, 59, 0.5);
-  --text-base: #f1f5f9;
+  --blur: 16px;
+  --shadow-light: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-dark: 0 4px 16px rgba(0,0,0,0.2);
+  --grad-light: linear-gradient(135deg, #1c7ed6, #48c6ef);
+  --grad-dark: linear-gradient(135deg, #4dabf7, #1e3a8a);
 }
 [data-theme='light'] {
-  --bg-base: #f8fafc;
-  --bg-card: rgba(255, 255, 255, 0.6);
-  --text-base: #1e293b;
+  --bg-page: #f3f4f6;
+  --bg-sidebar: rgba(255,255,255,0.9);
+  --bg-header: rgba(255,255,255,0.95);
+  --txt-base: #1f2937;
+  --txt-muted: #4b5563;
+  --card-bg: rgba(255,255,255,0.7);
+}
+[data-theme='dark'] {
+  --bg-page: #0f172a;
+  --bg-sidebar: rgba(15,23,42,0.8);
+  --bg-header: rgba(15,23,42,0.9);
+  --txt-base: #e2e8f0;
+  --txt-muted: #94a3b8;
+  --card-bg: rgba(30,41,59,0.6);
 }
 
-body {
-  background: var(--bg-base);
-  color: var(--text-base);
-  font-family: 'Inter', sans-serif;
-  transition: all 0.3s ease;
+/*=============*/
+/*  GLOBAL BODY */
+/*=============*/
+body, .page-body {
+  background: var(--bg-page) !important;
+  color: var(--txt-base) !important;
+  font-family: 'Inter', sans-serif !important;
+  transition: background 0.3s, color 0.3s;
 }
 
-.card, .frappe-card, .section-body, .layout-main-section {
-  background: var(--bg-card);
-  backdrop-filter: blur(var(--blur));
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  border: 1px solid rgba(255,255,255,0.2);
-  padding: 1rem;
+/*===========*/
+/*  HEADER   */
+/*===========*/
+.navbar, .navbar-inner, header[data-doctype] {
+  background: var(--bg-header) !important;
+  backdrop-filter: blur(var(--blur)) !important;
+  box-shadow: var(--shadow-light) !important;
+  border-bottom: none !important;
+}
+.navbar .navbar-brand {
+  font-weight: 700 !important;
+  font-size: 1.5rem !important;
+  background: var(--grad-light);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+[data-theme='dark'] .navbar .navbar-brand {
+  background: var(--grad-dark);
 }
 
-button, .btn, .btn-primary {
-  @apply px-4 py-2 rounded-full font-semibold text-white bg-gradient-to-tr from-blue-600 to-indigo-600 shadow-md transition hover:scale-105 hover:shadow-lg;
+/* Dark mode toggle button in header */
+#darkModeBtn {
+  @apply ml-auto px-3 py-1 rounded-full text-sm font-medium cursor-pointer transition;
+  background: var(--grad-light) !important;
+  color: white !important;
+}
+[data-theme='dark'] #darkModeBtn {
+  background: var(--grad-dark) !important;
 }
 
-input, textarea, select {
-  @apply rounded-lg px-4 py-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-gray-700 w-full text-gray-900 dark:text-white shadow focus:outline-none focus:ring-2 focus:ring-blue-500;
+/*===========*/
+/*  SIDEBAR  */
+/*===========*/
+.layout-side-section, .standard-sidebar {
+  width: 260px !important;
+  background: var(--bg-sidebar) !important;
+  backdrop-filter: blur(var(--blur)) !important;
+  box-shadow: var(--shadow-light) !important;
+  border-right: none !important;
+  padding-top: 1.5rem !important;
+}
+.layout-side-section .sidebar-link, .standard-sidebar ul li a {
+  @apply flex items-center gap-3 px-4 py-2 mb-1 rounded-lg transition;
+  color: var(--txt-base) !important;
+}
+.layout-side-section .sidebar-link:hover, .standard-sidebar ul li a:hover {
+  background: rgba(255,255,255,0.2) !important;
+}
+[data-theme='dark'] .layout-side-section .sidebar-link:hover,
+[data-theme='dark'] .standard-sidebar ul li a:hover {
+  background: rgba(255,255,255,0.1) !important;
 }
 
-.sidebar, .layout-side-section {
-  background: var(--bg-card);
-  backdrop-filter: blur(var(--blur));
-  box-shadow: var(--shadow);
-  border-radius: var(--radius);
-  padding: 1rem;
+/*========*/
+/*  BUTTONS */
+/*========*/
+.btn, button, .btn-primary, .btn-secondary {
+  @apply rounded-full px-5 py-2 text-white font-semibold transition transform hover:scale-[1.03] hover:shadow-lg !important;
+  background: var(--grad-light) !important;
+  border: none !important;
+}
+[data-theme='dark'] .btn, 
+[data-theme='dark'] button,
+[data-theme='dark'] .btn-primary {
+  background: var(--grad-dark) !important;
 }
 
-.list-row {
-  @apply transition-all duration-200 hover:scale-[1.01] hover:bg-blue-50 dark:hover:bg-slate-800 border border-gray-100 dark:border-gray-700 rounded-lg mb-2;
+/* primary outline */
+.btn-outline-primary {
+  @apply bg-transparent border-2 text-white rounded-full px-5 py-2 transition hover:bg-white hover:text-gray-800 !important;
+  border-color: white !important;
 }
+
+/*=============*/
+/*  FORMS/INPUTS */
+/*=============*/
+input, select, textarea, .form-control, .input-with-feedback {
+  @apply block w-full rounded-lg px-4 py-2 mb-2 border-0 transition focus:outline-none focus:ring-2 focus:ring-blue-500 !important;
+  background: var(--card-bg) !important;
+  color: var(--txt-base) !important;
+  box-shadow: var(--shadow-light) !important;
+}
+[data-theme='dark'] input, 
+[data-theme='dark'] select, 
+[data-theme='dark'] textarea {
+  box-shadow: var(--shadow-dark) !important;
+}
+
+/*============*/
+/*  CARDS/LIST */
+/*============*/
+/* Convert list-rows into cards */
+.list-row, .result-list .leaflet-popup-content-wrapper {
+  @apply rounded-xl mb-4 p-4 !important;
+  background: var(--card-bg) !important;
+  box-shadow: var(--shadow-light) !important;
+  transition: transform 0.2s, box-shadow 0.2s !important;
+}
+.list-row:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: var(--shadow-dark) !important;
+}
+
+/* Table views */
+.table-responsive table {
+  border-collapse: separate !important;
+  border-spacing: 0 0.5rem !important;
+}
+.table-responsive tr {
+  @apply block mb-2 !important;
+}
+.table-responsive td, .table-responsive th {
+  @apply block !important;
+  padding: 0.75rem !important;
+  background: var(--card-bg) !important;
+  border: none !important;
+  box-shadow: var(--shadow-light) !important;
+}
+
+/*===========*/
+/*  TOASTS  */
+/*===========*/
+@keyframes slide-in {
+  from { transform: translateX(100%); opacity: 0 }
+  to   { transform: translateX(0); opacity: 1 }
+}
+.toast {
+  @apply fixed bottom-6 right-6 px-4 py-2 rounded-lg text-white font-medium z-50! important;
+  animation: slide-in 0.3s ease-out;
+}
+.toast-success { background: #16a34a !important; }
+.toast-error   { background: #dc2626 !important; }
