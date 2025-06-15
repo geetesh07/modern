@@ -1,0 +1,52 @@
+@import url('https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css');
+
+:root {
+  --radius: 0.75rem;
+  --shadow: 0 6px 24px rgba(0,0,0,0.08);
+}
+
+[data-theme='dark'] {
+  --tw-bg-opacity: 1;
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+/* Global overrides */
+body {
+  @apply font-sans bg-gray-50 dark:bg-slate-900 text-gray-800 dark:text-gray-100;
+}
+
+/* Buttons */
+.btn, .btn-primary, .btn-sm, button {
+  @apply px-4 py-2 bg-blue-600 text-white rounded-full shadow hover:bg-blue-700 transition-all;
+}
+
+/* Inputs */
+input, select, textarea {
+  @apply rounded-lg px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white w-full focus:ring-2 focus:ring-blue-500;
+}
+
+/* Cards */
+.card, .frappe-card, .section-body {
+  @apply rounded-xl bg-white dark:bg-slate-800 shadow p-4 border border-gray-200 dark:border-gray-700;
+}
+
+/* Sidebar Styling */
+.layout-side-section, .sidebar, .standard-sidebar {
+  @apply bg-white dark:bg-slate-900 text-gray-800 dark:text-gray-100 border-r border-gray-200 dark:border-gray-800 p-2;
+}
+
+/* List View Row Styling */
+.list-row {
+  @apply p-4 border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-slate-800 transition;
+}
+
+/* Search Bar */
+input[data-fieldname="search"] {
+  @apply px-3 py-2 bg-white dark:bg-slate-800 rounded-lg border border-gray-300 dark:border-gray-600 text-sm;
+}
+
+/* Dark Mode Utilities */
+[data-theme="dark"] .text-gray-800 {
+  color: #f1f5f9 !important;
+}
