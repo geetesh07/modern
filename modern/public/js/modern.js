@@ -1,18 +1,18 @@
-// === Load Alpine ===
+// Inject Alpine
 const script = document.createElement('script');
 script.src = "https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js";
 script.defer = true;
 document.head.appendChild(script);
 
-// === Dark Mode ===
+// Dark mode
 document.addEventListener("DOMContentLoaded", () => {
   const theme = localStorage.getItem("theme") || (window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light");
   document.documentElement.setAttribute("data-theme", theme);
 });
 
-// Optional: Global Dark Mode Toggle Key (e.g., press "D" to toggle)
+// Toggle dark mode (Ctrl+D)
 document.addEventListener("keydown", (e) => {
-  if (e.key === "D" && e.ctrlKey) {
+  if (e.ctrlKey && e.key === "d") {
     const current = document.documentElement.getAttribute("data-theme");
     const next = current === "dark" ? "light" : "dark";
     document.documentElement.setAttribute("data-theme", next);
@@ -21,26 +21,24 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// === Toast Message ===
-window.showToast = function (msg = "Success", type = "success") {
+// Toast system
+window.showToast = function (msg = "Saved!", type = "success") {
   const toast = document.createElement("div");
-  toast.className = `fixed bottom-5 right-5 z-50 px-4 py-2 text-white rounded shadow-lg transition bg-${type === "success" ? "green" : type === "error" ? "red" : "gray"}-600`;
+  toast.className = `fixed bottom-5 right-5 z-[9999] text-white px-4 py-2 rounded-xl shadow-lg bg-${type === "success" ? "green" : "red"}-600 animate-fade`;
   toast.innerText = msg;
   document.body.appendChild(toast);
-  setTimeout(() => {
-    toast.style.opacity = 0;
-    setTimeout(() => toast.remove(), 500);
-  }, 3000);
+  setTimeout(() => toast.remove(), 3000);
 };
 
-// === Auto-enhance Sidebar ===
+// Auto upgrade sidebar
 document.addEventListener("DOMContentLoaded", () => {
-  const enhanceSidebar = () => {
-    const sidebarItems = document.querySelectorAll(".sidebar-section .standard-sidebar-section a, .layout-side-section a");
-    sidebarItems.forEach(el => {
-      el.classList.add("flex", "items-center", "gap-2", "rounded-lg", "hover:bg-gray-100", "dark:hover:bg-slate-800", "p-2", "transition");
-    });
-  };
-
-  setTimeout(enhanceSidebar, 1000);
+  setTimeout(() => {
+    const sidebar = document.querySelector(".layout-side-section, .sidebar");
+    if (sidebar) {
+      sidebar.style.borderRadius = "1rem";
+      sidebar.style.padding = "1rem";
+      sidebar.style.backdropFilter = "blur(20px)";
+      sidebar.style.boxShadow = "0 8px 24px rgba(0,0,0,0.1)";
+    }
+  }, 1000);
 });
